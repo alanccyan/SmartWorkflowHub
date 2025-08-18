@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Workflow Hub</title>
+    <!-- Use Tailwind CSS for modern, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Dark background */
+            color: #e2e8f0; /* Light text color */
+        }
+        .container {
+            max-width: 1200px;
+        }
+        /* Custom scrollbar for a polished look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #475569;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background-color: #1e293b;
+        }
+        .progress-bar-container {
+            background-color: #334155;
+            height: 8px;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #60a5fa, #3b82f6);
+            transition: width 0.3s ease-in-out;
+        }
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="p-8">
+
+    <!-- Main Container -->
+    <div class="container mx-auto">
+
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-12">
+            <h1 class="text-4xl font-bold text-white">Smart Workflow Hub</h1>
+            <div class="flex items-center space-x-4">
+                <input type="text" placeholder="Search tasks..." class="bg-slate-700 text-slate-200 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">JS</div>
+            </div>
+        </header>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+
+            <!-- Sidebar -->
+            <aside class="col-span-1 space-y-4">
+                <div class="bg-slate-800 p-6 rounded-xl shadow-lg">
+                    <h2 class="text-xl font-semibold mb-4 text-white">Navigation</h2>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="block py-2 px-3 rounded-lg text-blue-400 bg-slate-700 font-medium transition-colors hover:bg-slate-600">Dashboard</a></li>
+                        <li><a href="#" class="block py-2 px-3 rounded-lg text-slate-300 transition-colors hover:bg-slate-700">Projects</a></li>
+                        <li><a href="#" class="block py-2 px-3 rounded-lg text-slate-300 transition-colors hover:bg-slate-700">Analytics</a></li>
+                        <li><a href="#" class="block py-2 px-3 rounded-lg text-slate-300 transition-colors hover:bg-slate-700">Team</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="bg-slate-800 p-6 rounded-xl shadow-lg">
+                    <h2 class="text-xl font-semibold mb-4 text-white">Quick Actions</h2>
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition-colors shadow-md" onclick="showTaskModal()">
+                        + New Task
+                    </button>
+                    <button class="w-full mt-2 bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-xl transition-colors shadow-md">
+                        View Analytics
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Dashboard Area -->
+            <main class="col-span-3">
+                <h2 class="text-3xl font-bold mb-6 text-white">Upcoming Tasks</h2>
+                
+                <!-- Task List -->
+                <div id="taskList" class="space-y-6">
+                    <!-- Task 1 -->
+                    <div class="task-card bg-slate-800 p-6 rounded-xl shadow-lg transition-transform duration-200">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-white">Campaign Design</h3>
+                            <span class="text-sm font-medium text-slate-400">Due: 3 days</span>
+                        </div>
+                        <div class="flex items-center mb-4">
+                            <input type="checkbox" class="task-checkbox h-5 w-5 rounded-md text-blue-600 focus:ring-blue-500 bg-slate-700 border-slate-600 mr-3" data-progress="60">
+                            <div class="progress-bar-container w-full">
+                                <div class="progress-bar" style="width: 60%;"></div>
+                            </div>
+                            <span class="ml-4 text-sm font-medium text-slate-400 progress-text">60%</span>
+                        </div>
+                    </div>
+
+                    <!-- Task 2 (AI-suggested) -->
+                    <div class="task-card bg-slate-800 p-6 rounded-xl shadow-lg border-2 border-dashed border-blue-500 transition-transform duration-200">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-white">Client Review Meeting</h3>
+                            <span class="text-xs font-medium text-white bg-blue-600 rounded-full px-3 py-1">AI Suggests</span>
+                        </div>
+                        <div class="text-slate-400 mb-4">Summarize notes & auto-assign action items</div>
+                        <div class="flex items-center">
+                            <input type="checkbox" class="task-checkbox h-5 w-5 rounded-md text-blue-600 focus:ring-blue-500 bg-slate-700 border-slate-600 mr-3" data-progress="0">
+                            <div class="progress-bar-container w-full">
+                                <div class="progress-bar" style="width: 0%;"></div>
+                            </div>
+                            <span class="ml-4 text-sm font-medium text-slate-400 progress-text">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- Task 3 (AI-suggested) -->
+                    <div class="task-card bg-slate-800 p-6 rounded-xl shadow-lg border-2 border-dashed border-blue-500 transition-transform duration-200">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-white">Social Media Posts</h3>
+                            <span class="text-xs font-medium text-white bg-blue-600 rounded-full px-3 py-1">AI Suggests</span>
+                        </div>
+                        <div class="text-slate-400 mb-4">Auto-schedule for peak engagement</div>
+                        <div class="flex items-center">
+                            <input type="checkbox" class="task-checkbox h-5 w-5 rounded-md text-blue-600 focus:ring-blue-500 bg-slate-700 border-slate-600 mr-3" data-progress="0">
+                            <div class="progress-bar-container w-full">
+                                <div class="progress-bar" style="width: 0%;"></div>
+                            </div>
+                            <span class="ml-4 text-sm font-medium text-slate-400 progress-text">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- Task 4 (AI-suggested) -->
+                    <div class="task-card bg-slate-800 p-6 rounded-xl shadow-lg border-2 border-dashed border-blue-500 transition-transform duration-200">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-white">Analytics Report</h3>
+                            <span class="text-xs font-medium text-white bg-blue-600 rounded-full px-3 py-1">AI Suggests</span>
+                        </div>
+                        <div class="text-slate-400 mb-4">Auto-generate chart</div>
+                        <div class="flex items-center">
+                            <input type="checkbox" class="task-checkbox h-5 w-5 rounded-md text-blue-600 focus:ring-blue-500 bg-slate-700 border-slate-600 mr-3" data-progress="0">
+                            <div class="progress-bar-container w-full">
+                                <div class="progress-bar" style="width: 0%;"></div>
+                            </div>
+                            <span class="ml-4 text-sm font-medium text-slate-400 progress-text">0%</span>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal for adding a new task -->
+    <div id="taskModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900 bg-opacity-75 transition-opacity duration-300">
+        <div class="bg-slate-800 p-8 rounded-xl shadow-2xl w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6 text-white">Add New Task</h2>
+            <form id="addTaskForm" class="space-y-4">
+                <div>
+                    <label for="taskName" class="block text-sm font-medium text-slate-300">Task Name</label>
+                    <input type="text" id="taskName" class="mt-1 block w-full bg-slate-700 text-white border-slate-600 rounded-md shadow-sm p-3 focus:border-blue-500 focus:ring-blue-500" required>
+                </div>
+                <div>
+                    <label for="taskDueDate" class="block text-sm font-medium text-slate-300">Due Date</label>
+                    <input type="text" id="taskDueDate" placeholder="e.g., Today, Tomorrow" class="mt-1 block w-full bg-slate-700 text-white border-slate-600 rounded-md shadow-sm p-3 focus:border-blue-500 focus:ring-blue-500">
+                </div>
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button type="button" onclick="closeTaskModal()" class="px-4 py-2 text-slate-400 hover:text-white transition-colors">Cancel</button>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl transition-colors shadow-md">Add Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript for interactivity -->
+    <script>
+        // Get all task checkboxes
+        const checkboxes = document.querySelectorAll('.task-checkbox');
+
+        // Add event listener to each checkbox
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', (event) => {
+                const taskCard = event.target.closest('.task-card');
+                const progressBar = taskCard.querySelector('.progress-bar');
+                const progressText = taskCard.querySelector('.progress-text');
+                const currentProgress = parseInt(event.target.getAttribute('data-progress'), 10);
+
+                if (event.target.checked) {
+                    // Task completed, set progress to 100%
+                    progressBar.style.width = '100%';
+                    progressText.textContent = '100%';
+                    taskCard.classList.add('opacity-50', 'line-through');
+                    taskCard.classList.remove('border-dashed', 'border-blue-500'); // Remove AI suggestion border
+                } else {
+                    // Task incomplete, revert to original progress
+                    progressBar.style.width = currentProgress + '%';
+                    progressText.textContent = currentProgress + '%';
+                    taskCard.classList.remove('opacity-50', 'line-through');
+                }
+            });
+        });
+
+        // Modal functions
+        const taskModal = document.getElementById('taskModal');
+        const addTaskForm = document.getElementById('addTaskForm');
+        const taskList = document.getElementById('taskList');
+
+        function showTaskModal() {
+            taskModal.classList.remove('hidden');
+            taskModal.classList.add('flex');
+        }
+
+        function closeTaskModal() {
+            taskModal.classList.add('hidden');
+            taskModal.classList.remove('flex');
+            addTaskForm.reset();
+        }
+
+        // Handle form submission to add a new task
+        addTaskForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const taskName = document.getElementById('taskName').value;
+            const taskDueDate = document.getElementById('taskDueDate').value;
+
+            if (taskName) {
+                const newTaskHTML = `
+                    <div class="task-card bg-slate-800 p-6 rounded-xl shadow-lg transition-transform duration-200">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-white">${taskName}</h3>
+                            <span class="text-sm font-medium text-slate-400">Due: ${taskDueDate || 'N/A'}</span>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" class="task-checkbox h-5 w-5 rounded-md text-blue-600 focus:ring-blue-500 bg-slate-700 border-slate-600 mr-3" data-progress="0">
+                            <div class="progress-bar-container w-full">
+                                <div class="progress-bar" style="width: 0%;"></div>
+                            </div>
+                            <span class="ml-4 text-sm font-medium text-slate-400 progress-text">0%</span>
+                        </div>
+                    </div>
+                `;
+                taskList.insertAdjacentHTML('beforeend', newTaskHTML);
+                closeTaskModal();
+                // Re-add event listeners to the new checkbox
+                document.querySelector('.task-list').lastElementChild.querySelector('.task-checkbox').addEventListener('change', (event) => {
+                    const taskCard = event.target.closest('.task-card');
+                    const progressBar = taskCard.querySelector('.progress-bar');
+                    const progressText = taskCard.querySelector('.progress-text');
+                    const currentProgress = parseInt(event.target.getAttribute('data-progress'), 10);
+    
+                    if (event.target.checked) {
+                        progressBar.style.width = '100%';
+                        progressText.textContent = '100%';
+                        taskCard.classList.add('opacity-50', 'line-through');
+                        taskCard.classList.remove('border-dashed', 'border-blue-500');
+                    } else {
+                        progressBar.style.width = currentProgress + '%';
+                        progressText.textContent = currentProgress + '%';
+                        taskCard.classList.remove('opacity-50', 'line-through');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
